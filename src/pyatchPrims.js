@@ -1,43 +1,31 @@
-/**
- * @fileoverview This is the main entry point for the library. It exports the api that the python worker (or any worker for that matter) will use to communicate with the Pyatch VM in the main thread.
- * @author Elliot Roe
- * @license MIT
- * @version 0.0.1
- * @module index
- * 
- */
-class Pyatch {
 
-    /**
-     * 
-     * @param {string} targetId 
-     * @param {function} postFunction function used to post a block op from worker to VM. Function params are targetID, op_code, args
-     */
+class PyatchPrims {
+
+    static opcodeMap = {
+        move: "motion_movesteps",
+        goToXY: "motion_gotoxy",
+        goTo: "motion_goto",
+        turnRight: "motion_turnright",
+        turnLeft: "motion_turnleft",
+        pointInDirection: "motion_pointindirection",
+        pointTowards: "motion_pointtowards",
+        glide: "motion_glidesecstoxy",
+        glideTo: "motion_glideto",
+        ifOnEdgeBounce: "motion_ifonedgebounce",
+        setRotationStyle: "motion_setrotationstyle",
+        changeX: "motion_changexby",
+        setX: "motion_setx",
+        changeY: "motion_changeyby",
+        setY: "motion_sety",
+        getX: "motion_xposition",
+        getY: "motion_yposition",
+        getDirection: "motion_direction",
+    };
     constructor(targetId, postFunction) {
         this.targetId = targetId;
         this.post = function (op_code, args) {
             postFunction(this.targetId, op_code, args);
         }
-        this.opcodeMap = {
-            move: motion_movesteps,
-            goToXY: motion_gotoxy,
-            goTo: motion_goto,
-            turnRight: motion_turnright,
-            turnLeft: motion_turnleft,
-            pointInDirection: motion_pointindirection,
-            pointTowards: motion_pointtowards,
-            glide: motion_glidesecstoxy,
-            glideTo: motion_glideto,
-            ifOnEdgeBounce: motion_ifonedgebounce,
-            setRotationStyle: motion_setrotationstyle,
-            changeX: motion_changexby,
-            setX: motion_setx,
-            changeY: motion_changeyby,
-            setY: motion_sety,
-            getX: motion_xposition,
-            getY: motion_yposition,
-            getDirection: motion_direction,
-        };
     }
 
     static getPrimNames() {
@@ -105,14 +93,19 @@ class Pyatch {
     }
 
     async getX() {
-        x = await this.post(this.opcodeMap['getX'], {});
+        let x = await this.post(this.opcodeMap['getX'], {});
+        return x;
     }
 
     async getY() {
-        this.post(this.opcodeMap['getY'], {});
+        let y =this.post(this.opcodeMap['getY'], {});
+        return y;
     }
 
     async getDirection() {
-        this.post(this.opcodeMap['getDirection'], {});
+        let direction = this.post(this.opcodeMap['getDirection'], {});
+        return direction;
     }
 }
+
+module.exports = PyatchPrims;
