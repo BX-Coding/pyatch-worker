@@ -1,11 +1,7 @@
 
-import PyatchPrims from './pyatchPrims.js';
+import PrimProxy from './primProxy.js';
 import WorkerMessages from './WorkerMessages.js';
 import { loadPyodide } from 'pyodide';
-
-const context = {
-  PyatchPrims: PyatchPrims,
-}
 
 
 /**
@@ -19,7 +15,7 @@ let _pendingTokens = {};
 async function initPyodide() {
   _postStatusMessage(WorkerMessages.ToVM.PyodideLoading)
   self.pyodide = await loadPyodide({
-    indexURL: "/Users/elliotroe/Documents/GitHub/pyatch-worker/node_modules/pyodide",
+    indexURL: "/Users/H530006/Documents/pyatch-worker/node_modules/pyodide",
   });
   _postStatusMessage(WorkerMessages.ToVM.PyodideLoaded)
 }
@@ -67,9 +63,19 @@ function _run(pythonScript,  targets) {
   self.pyodide.runPython(pythonScript);
   _postStatusMessage(WorkerMessages.ToVM.PythonRunning);
 
-  // TODO: Need to loop through each async function in the global scope and run them concurrently
+  let target_func_arr = []
 
-  _postBlockOpMessage(targets[0], 'move', [10]);
+  // TODO: Need to loop through each async function in the global scope and run them concurrently
+  for(let global of self.pyodide.globals) {
+    if (global.includes('target')) {
+      target_func_arr.push(self.pyodide.globals.get(global))
+    }
+  }
+
+  for(let target_func of target_func_arr) {
+    target_func(new PrimProxy(targets[0], _postBlockOpMessage))
+  }
+
 }
 
 function onVMMessage(event) {

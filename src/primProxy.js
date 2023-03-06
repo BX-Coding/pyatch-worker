@@ -1,5 +1,5 @@
 
-class PyatchPrims {
+class PrimProxy {
 
     static opcodeMap = {
         move: "motion_movesteps",
@@ -29,83 +29,83 @@ class PyatchPrims {
     }
 
     static getPrimNames() {
-        return Object.keys(this.opcodeMap);
+        return Object.keys(PrimProxy.opcodeMap);
     }
 
     move(steps) {
-        this.post(this.opcodeMap['move'], { STEPS: steps });
+        this.post(PrimProxy.opcodeMap['move'], { STEPS: steps });
     }
 
     goToXY(x, y) {
-        this.post(this.opcodeMap['goToXY'], { X: x, Y: y });
+        this.post(PrimProxy.opcodeMap['goToXY'], { X: x, Y: y });
     }
 
     goTo(targetName) {
-        this.post(this.opcodeMap['goTo'], { TO: targetName });
+        this.post(PrimProxy.opcodeMap['goTo'], { TO: targetName });
     }
 
     turnRight(degrees) {
-        this.post(this.opcodeMap['turnRight'], { DEGREES: degrees });
+        this.post(PrimProxy.opcodeMap['turnRight'], { DEGREES: degrees });
     }
 
     turnLeft(degrees) {
-        this.post(this.opcodeMap['turnLeft'], { DEGREES: degrees });
+        this.post(PrimProxy.opcodeMap['turnLeft'], { DEGREES: degrees });
     }
 
     pointInDirection(degrees) {
-        this.post(this.opcodeMap['pointInDirection'], { DIRECTION: degrees });
+        this.post(PrimProxy.opcodeMap['pointInDirection'], { DIRECTION: degrees });
     }
 
     pointTowards(targetName) {
-        this.post(this.opcodeMap['pointTowards'], { TOWARDS: targetName });
+        this.post(PrimProxy.opcodeMap['pointTowards'], { TOWARDS: targetName });
     }
 
     glide(seconds, x, y) {
-        this.post(this.opcodeMap['glide'], { SECS: seconds, X: x, Y: y });
+        this.post(PrimProxy.opcodeMap['glide'], { SECS: seconds, X: x, Y: y });
     }
 
     glideTo(seconds, targetName) {
-        this.post(this.opcodeMap['glideTo'], { SECS: seconds, TO: targetName });
+        this.post(PrimProxy.opcodeMap['glideTo'], { SECS: seconds, TO: targetName });
     }
 
     ifOnEdgeBounce() {
-        this.post(this.opcodeMap['ifOnEdgeBounce'], {});
+        this.post(PrimProxy.opcodeMap['ifOnEdgeBounce'], {});
     }
 
     setRotationStyle(style) {
-        this.post(this.opcodeMap['setRotationStyle'], { STYLE: style });
+        this.post(PrimProxy.opcodeMap['setRotationStyle'], { STYLE: style });
     }
 
     changeX(deltaX) {
-        this.post(this.opcodeMap['changeX'], { DX: deltaX });
+        this.post(PrimProxy.opcodeMap['changeX'], { DX: deltaX });
     }
 
     setX(x) {
-        this.post(this.opcodeMap['setX'], { X: x });
+        this.post(PrimProxy.opcodeMap['setX'], { X: x });
     }
 
     changeY(deltaY) {
-        this.post(this.opcodeMap['changeY'], { DY: deltaY });
+        this.post(PrimProxy.opcodeMap['changeY'], { DY: deltaY });
     }
 
     setY(y) {
-        this.post(this.opcodeMap['setY'], { Y: y });
+        this.post(PrimProxy.opcodeMap['setY'], { Y: y });
     }
 
     async getX() {
-        let x = await this.post(this.opcodeMap['getX'], {});
+        let x = await PrimProxy.post(this.opcodeMap['getX'], {});
         return x;
     }
 
     async getY() {
-        let y =this.post(this.opcodeMap['getY'], {});
+        let y =PrimProxy.post(this.opcodeMap['getY'], {});
         return y;
     }
 
     async getDirection() {
-        let direction = this.post(this.opcodeMap['getDirection'], {});
+        let direction = PrimProxy.post(this.opcodeMap['getDirection'], {});
         return direction;
     }
 }
 
-module.exports = PyatchPrims;
+module.exports = PrimProxy;
