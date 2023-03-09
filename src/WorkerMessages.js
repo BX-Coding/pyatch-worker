@@ -1,11 +1,10 @@
 
-var WorkerMessages = {
+let WorkerMessages = {
 
 
     ToVM: {
         PyodideLoading: 'PyodideLoading',
         PyodideLoaded: 'PyodideLoaded',
-        PythonLoading: 'PythonLoading',
         PythonRunning: 'PythonRunning',
         PythonStopped: 'PythonStopped',
         BlockOP: 'BlockOP',

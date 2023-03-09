@@ -1,3 +1,4 @@
+/* eslint-disable no-func-assign */
 
 import PrimProxy from './primProxy.js';
 import WorkerMessages from './WorkerMessages.js';
@@ -35,7 +36,7 @@ function _resolvePendingToken(token, value) {
 function _postBlockOpMessage(targetID, op_code, args) {
   let token = _getToken();
   let id = WorkerMessages.ToVM.BlockOP
-  return new Promise(function (resolve) {
+  return new Promise((resolve) => {
     _pendingTokens[token] = resolve;
     _postMessage(id, targetID, op_code, args, token)
     });
@@ -45,8 +46,8 @@ function _postStatusMessage(id) {
   _postMessage(id, null, null, null, null)
 }
 
-function _postMessage(id, targetID, op_code, args, token) {
-  _postWorkerMessage({id, targetID, op_code, args, token});
+function _postMessage(id, targetID, opCode, args, token) {
+  _postWorkerMessage({id, targetID, opCode, args, token});
 }
 
 function _postWorkerMessage(message) {
@@ -85,7 +86,7 @@ function onVMMessage(event) {
   } else if (id === WorkerMessages.FromVM.ResultValue) {
     _resolvePendingToken(token, data.value);
   } else if (id === WorkerMessages.FromVM.VMConnected) {
-    _initWorker();
+    console.log('Undefined Functionality');
   }
 
 }

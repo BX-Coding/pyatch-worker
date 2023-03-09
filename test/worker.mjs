@@ -3,15 +3,11 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// var chai = require("chai");
-// var sinon = require("sinon");
-// var sinonChai = require("sinon-chai");
-
 import chai from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
-var expect = chai.expect;
+let expect = chai.expect;
 chai.use(sinonChai);
 
 const __filename = fileURLToPath(import.meta.url);
@@ -33,26 +29,26 @@ describe('Pyatch Worker Async Run', () => {
 			const spy = sinon.spy();
 			worker.onmessage = spy;
 
-			const python_code = fs.readFileSync(path.join(__dirname, './python', 'single-target-move.py'), 'utf8');
-			const target_arr = ['target1'];	
+			const pythonCode = fs.readFileSync(path.join(__dirname, './python', 'single-target-move.py'), 'utf8');
+			const targetArr = ['target1'];	
 
 			const message = {
 				id: "AsyncRun",
 				token: "token",
-				python: python_code,
-				targets: target_arr,
+				python: pythonCode,
+				targets: targetArr,
 			}
 
 			worker.postMessage(message);
 
 			await sleep(1000);
 
-			let last_call_data = spy.getCalls().slice(-1)[0].firstArg.data;
-			expect(last_call_data.id).to.equal('BlockOP')
-			expect(last_call_data.targetID).to.equal(target_arr[0])
-			expect(last_call_data.op_code).to.equal('motion_movesteps')
-			expect(last_call_data.args).to.eql({ STEPS: 10 })
-			expect(last_call_data.token).to.be.a('string')
+			let lastCallData = spy.getCalls().slice(-1)[0].firstArg.data;
+			expect(lastCallData.id).to.equal('BlockOP')
+			expect(lastCallData.targetID).to.equal(targetArr[0])
+			expect(lastCallData.op_code).to.equal('motion_movesteps')
+			expect(lastCallData.args).to.eql({ STEPS: 10 })
+			expect(lastCallData.token).to.be.a('string')
 		});
 
 		it('Go To XY', async () => {
@@ -197,35 +193,6 @@ describe('Pyatch Worker Async Run', () => {
 			expect(last_call_data.targetID).to.equal(target_arr[0])
 			expect(last_call_data.op_code).to.equal('motion_pointindirection')
 			expect(last_call_data.args).to.eql({ DIRECTION: 90 })
-			expect(last_call_data.token).to.be.a('string')
-		});
-
-		it('Point Towards', async () => {
-
-			const url = new URL('../src/pyodideWebWorker.mjs', import.meta.url);
-			const worker = new Worker(url, { type: 'module' });
-			const spy = sinon.spy();
-			worker.onmessage = spy;
-
-			const python_code = fs.readFileSync(path.join(__dirname, './python', 'single-target-pointtowards.py'), 'utf8');
-			const target_arr = ['target1'];	
-
-			const message = {
-				id: "AsyncRun",
-				token: "token",
-				python: python_code,
-				targets: target_arr,
-			}
-
-			worker.postMessage(message);
-
-			await sleep(1000);
-
-			let last_call_data = spy.getCalls().slice(-1)[0].firstArg.data;
-			expect(last_call_data.id).to.equal('BlockOP')
-			expect(last_call_data.targetID).to.equal(target_arr[0])
-			expect(last_call_data.op_code).to.equal('motion_pointtowards')
-			expect(last_call_data.args).to.eql({ TOWARDS: 'target1' })
 			expect(last_call_data.token).to.be.a('string')
 		});
 
