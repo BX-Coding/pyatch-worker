@@ -1,2 +1,2 @@
 # pyatch-worker
-The worker that acts as the driver to the Pyatch VM
+This repo is archived as its functionality is now internal to the Patch-VM
